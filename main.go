@@ -13,7 +13,7 @@ import (
 
 const allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789_- "
 
-var tlds = TLDs{
+var tlds = topLevelDomains{
 	"com",
 	"net",
 }

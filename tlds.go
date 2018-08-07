@@ -2,13 +2,13 @@ package main
 
 import "fmt"
 
-type TLDs []string
+type topLevelDomains []string
 
-func (TLDs) String() string {
-	return fmt.Sprint("")
+func (tlds topLevelDomains) String() string {
+	return fmt.Sprint([]string(tlds))
 }
 
-func (ds *TLDs) Set(v string) error {
-	*ds = append(*ds, v)
+func (tlds *topLevelDomains) Set(v string) error {
+	*tlds = append(*tlds, v)
 	return nil
 }
