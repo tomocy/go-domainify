@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"math/rand"
 	"os"
@@ -12,9 +13,18 @@ import (
 
 const allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789_- "
 
-var tlds = []string{
+var tlds = TLDs{
 	"com",
 	"net",
+}
+
+func init() {
+	pickUpTLDsFromFlag()
+}
+
+func pickUpTLDsFromFlag() {
+	flag.Var(&tlds, "tld", "top level domain")
+	flag.Parse()
 }
 
 func main() {
