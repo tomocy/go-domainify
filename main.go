@@ -10,7 +10,7 @@ import (
 	"unicode"
 )
 
-const allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789_-"
+const allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789_- "
 
 var tlds = []string{
 	"com",
@@ -21,19 +21,33 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		lowerText := strings.ToLower(scanner.Text())
-		domain := make([]rune, 0)
-		for _, r := range lowerText {
-			if unicode.IsSpace(r) {
-				r = '-'
-			}
-			if !strings.ContainsRune(allowedChars, r) {
-				continue
-			}
+		domainName := generateDomainName(scanner.Text())
+		fmt.Println(domainName)
+	}
+}
 
-			domain = append(domain, r)
+func generateDomainName(plainText string) string {
+	domainName := adjustToRFC3986(plainText)
+	return domainName + "." + tlds[rand.Intn(len(tlds))]
+}
+
+func adjustToRFC3986(plainText string) string {
+	lowerText := strings.ToLower(plainText)
+	domainName := make([]rune, 0)
+	for _, r := range lowerText {
+		if !isAllowedChar(r) {
+			continue
+		}
+		if unicode.IsSpace(r) {
+			r = '-'
 		}
 
-		fmt.Println(string(domain) + "." + tlds[rand.Intn(len(tlds))])
+		domainName = append(domainName, r)
 	}
+
+	return string(domainName)
+}
+
+func isAllowedChar(r rune) bool {
+	return strings.ContainsRune(allowedChars, r)
 }
